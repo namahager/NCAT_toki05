@@ -67,7 +67,7 @@ typedef FocalTech_Class CapacitiveTouch ;
 #if defined(LILYGO_WATCH_AIR530_GPS)
 #include "drive/gps/Air530.h"
 #elif defined(LILYGO_WATCH_HAS_GPS)
-#include "drive/gps/TinyGPS++.h"
+#include "drive/gps/TinyGPSPlus.h"
 #endif
 
 
