@@ -190,7 +190,7 @@ extern "C" {
 #define AUDIO_I2SPORT 1                 // I2S_NUM_0 or I2S_NUM_1 (I2S_NUM_0 is USED BY COMPOSITE VIDEO)
 #define MICROSD 1                       // MicroSD support 0=disabled, 1=enabled, 2=required
 #define FLASH_ROM 0                     // Extra ROMs in FLASH
-#define GPIO_BUTTONS 1                  // 0=disabled, 1=IC 4017 Buttons, 2=Buttons Matrix
+#define GPIO_BUTTONS 3                  // 0=disabled, 1=IC 4017 Buttons, 2=Buttons Matrix
 #define CLOCK 1                         // View CLOCK on main screen
 #define LCD_WIDTH 240                   // LCD MAX WIDTH
 #define LCD_HEIGHT 240                  // LCD MAX HEIGHT
@@ -828,11 +828,11 @@ uint32_t FREQ___(uint32_t HERTZ) {
 #define PIN_UP     39  //SVN
 #define PIN_DOWN   35  //IO35
 #define PIN_LEFT   36  //SVP
-#define PIN_RIGHT  12  //TDI => Do not install 330R resistor!!!
-#define PIN_A      2   //IO2
-#define PIN_B      14  //TMS
-#define PIN_START  15  //TDO
-#define PIN_SELECT 13  //TCK
+#define PIN_RIGHT  32  //TDI => Do not install 330R resistor!!!  //12から32へ
+#define PIN_A      34   //IO2 //2から34へ
+#define PIN_B      27  //TMS //14から27へ
+#define PIN_START  25  //TDO //15から25へ
+#define PIN_SELECT 26  //TCK //13から26へ
 #endif
 //--------------------------------------------------------------------------------
 // SERVICE PIN: (LCD BACKLIGHT & BATTERY METER)
@@ -1041,7 +1041,7 @@ class LGFX: public lgfx::LGFX_Device {
         cfg.pin_sclk = 14;
         cfg.pin_mosi = 13;
         cfg.pin_miso = -1;
-        cfg.pin_dc = 12;
+        cfg.pin_dc = 12;  // 12から変更
 #elif defined(NCAT_MODULAR)        
         // SPI
         cfg.spi_host = VSPI_HOST;       //(VSPI_HOST or HSPI_HOST)
