@@ -171,10 +171,10 @@ extern "C" {
 #define SETTINGS_OPTIONS 1              // Enable EEPROM SETTINGS
 #define JPG_DECODER 1                   // Enable JPG_DECODER
 #define PNG_DECODER 1                   // Enable PNG_DECODER
-#define USBHOST 1                       // USB HOST support: 0=disabled, 1=enabled, 2=required
-#define USBHOST_STORAGE 1               // USB HOST Mass Storage features: 0=disabled, 1=enabled
-#define USBHOST_HID 1                   // USB HOST HID features: 0=disabled, 1=enabled
-#define USBHOST_JOYSTICKS 1             // USB HOST MULTIPLE JOYSTICK features: 0=disabled, 1=enabled
+#define USBHOST 0                       // USB HOST support: 0=disabled, 1=enabled, 2=required // 1→0に変更
+#define USBHOST_STORAGE 0               // USB HOST Mass Storage features: 0=disabled, 1=enabled // 1→0に変更
+#define USBHOST_HID 0                   // USB HOST HID features: 0=disabled, 1=enabled // 1→0に変更
+#define USBHOST_JOYSTICKS 0             // USB HOST MULTIPLE JOYSTICK features: 0=disabled, 1=enabled // 1→0に変更
 #define USBHOST_BLUETOOTH 0             // USB HOST Mass Storage features: 0=disabled, 1=enabled
 #define LCD_ENABLED 1                   // Enable ST7789 LCD 240*240 
 #define LCD_SPI_SPEED 80000000          // 1.54" ST7789 LCD can handle 80MHz SPI
@@ -1162,7 +1162,9 @@ static LGFX tft;
 
 //#define SD_CONFIG SdSpiConfig(SD_CS_PIN, DEDICATED_SPI, SD_SCK_MHZ(25)) //20MHz recommending 25MHz MAX.
 #if defined(NCAT_BOARD) || defined(NCAT_MINIMAL)
-  #define SD_CONFIG SdSpiConfig(SD_CS_PIN, SHARED_SPI, SD_SCK_HZ(20000000)) //20MHz recommending 25MHz MAX. SHARED VSPI (used also for USB Host)
+ // #define SD_CONFIG SdSpiConfig(SD_CS_PIN, SHARED_SPI, SD_SCK_HZ(20000000)) //20MHz recommending 25MHz MAX. SHARED VSPI (used also for USB Host)
+// USB HOSTなしの場合はDEDICATED_SPIに変更
+  #define SD_CONFIG SdSpiConfig(SD_CS_PIN, DEDICATED_SPI, SD_SCK_HZ(20000000))
 #endif
 #if defined(NCAT_VGA)
   #define SD_CONFIG SdSpiConfig(SD_CS_PIN, SHARED_SPI, SD_SCK_HZ(20000000)) //13MHz recommending 25MHz MAX. SHARED VSPI (used also for USB Host)
