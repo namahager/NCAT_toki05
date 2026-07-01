@@ -1164,7 +1164,7 @@ static LGFX tft;
 #if defined(NCAT_BOARD) || defined(NCAT_MINIMAL)
  // #define SD_CONFIG SdSpiConfig(SD_CS_PIN, SHARED_SPI, SD_SCK_HZ(20000000)) //20MHz recommending 25MHz MAX. SHARED VSPI (used also for USB Host)
 // USB HOSTなしの場合はDEDICATED_SPIに変更
-  #define SD_CONFIG SdSpiConfig(SD_CS_PIN, DEDICATED_SPI, SD_SCK_HZ(20000000))
+  #define SD_CONFIG SdSpiConfig(SD_CS_PIN, DEDICATED_SPI, SD_SCK_HZ(20000000)) 
 #endif
 #if defined(NCAT_VGA)
   #define SD_CONFIG SdSpiConfig(SD_CS_PIN, SHARED_SPI, SD_SCK_HZ(20000000)) //13MHz recommending 25MHz MAX. SHARED VSPI (used also for USB Host)
@@ -3420,6 +3420,25 @@ void setup() {
 #endif
 
 #if defined(NCAT_BOARD) || defined(NCAT_LITE) || defined(NCAT_LOW_POWER) || defined(NCAT_TWATCH_V1) || defined(NCAT_TWATCH_V2) || defined(HACKED_NCAT_TWATCH_V2) || defined(NCAT_MODULAR)  
+ // ===== SD早期初期化テスト（確認後削除） =====
+ delay(500);  // 追加
+Serial.print("SD_CS_PIN=");
+Serial.print(SD_CS_PIN);
+Serial.print(" MICROSD=");
+Serial.println(MICROSD);
+SPI.begin(18, 19, 23, SD_CS_PIN);  // SCK, MISO, MOSI, CS ← 追加
+
+  printf("EARLY SD TEST...");
+  if (SD_CS_PIN!=-1) {
+    pinMode(SD_CS_PIN, OUTPUT);
+    digitalWrite(SD_CS_PIN, 0);
+  }
+  if (!SD.begin(SD_CS_PIN, SD_SCK_MHZ(4))) {   // SD_CONFIGの代わりに直接指定
+    printf("[EARLY FAIL]\n");
+  } else {
+    printf("[EARLY OK]\n");
+  }
+  // ===== ここまで =====
   // INIT ST7789 LCD
   printf("Initializing ST7789 LCD...");
 
@@ -3799,6 +3818,7 @@ INPUTCLEAR();
   // INIT microSD CARD
   //--------------------------------------------------------------------------------
 #if MICROSD
+SPI.begin(SOFTSD_SCK_PIN, SOFTSD_MISO_PIN, SOFTSD_MOSI_PIN, SD_CS_PIN);  // 追加
   printf("Initializing microSD CARD...");
 
   if (SD_CS_PIN!=-1) {
